@@ -1,4 +1,4 @@
-package org.example.Lesson10_2;
+package org.example.lesson10_2;
 
 import java.io.*;
 import java.text.*;

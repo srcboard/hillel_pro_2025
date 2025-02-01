@@ -1,4 +1,4 @@
-package org.example.Lesson10_2;
+package org.example.lesson10_2;
 
 public class FileMaxSizeReachedException extends Exception {
     public FileMaxSizeReachedException(String message) {
