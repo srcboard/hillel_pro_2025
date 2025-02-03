@@ -1,4 +1,4 @@
-package org.example.Lesson10;
+package org.example.lesson10;
 
 import java.io.FileReader;
 import java.io.FileWriter;
