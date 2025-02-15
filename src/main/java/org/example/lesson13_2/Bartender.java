@@ -9,13 +9,14 @@ class Bartender implements Runnable {
 
     @Override
     public void run() {
-        while (bar.isOpen()) {
+        boolean isBarOpen = true;
+        while (isBarOpen) {
             try {
                 Thread.sleep(2500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            bar.receiveAndProcessOrder();
+            isBarOpen = bar.receiveAndProcessOrder();
         }
     }
 }

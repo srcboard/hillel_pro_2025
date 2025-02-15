@@ -1,52 +1,57 @@
 package org.example.lesson13_2;
 
+import java.util.Optional;
 import java.util.Queue;
 import java.util.LinkedList;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 class Bar {
     private final Queue<Order> orders = new LinkedList<>();
     private final int clientsCount;
     private int servedClientsCount = 0;
+    private final Lock lock = new ReentrantLock();
 
     public Bar(int clientsCount) {
         this.clientsCount = clientsCount;
     }
 
-    public synchronized void placeOrder(Order order) {
-        orders.add(order);
-        System.out.println(Thread.currentThread().getName() + " ordered: " + order.drink());
-        notify();
+    public void placeOrder(Order order) {
+        lock.lock();
+        try {
+            orders.add(order);
+            System.out.println(Thread.currentThread().getName() + " ordered: " + order.drink());
+        } finally {
+            lock.unlock();
+        }
     }
 
-    private Drink prepareDrink() {
-        Order order = orders.poll();
-        if (order != null) {
-            return order.drink();
-        } else {
-            return null;
-        }
+    private Optional<Drink> prepareDrink() {
+        return Optional.ofNullable(orders.poll()).map(Order::drink);
     }
 
     private void serveDrink() {
         servedClientsCount++;
     }
 
-    public synchronized void receiveAndProcessOrder() {
-        while (orders.isEmpty() && isOpen()) {
+    public boolean receiveAndProcessOrder() {
+        if (lock.tryLock()) {
             try {
-                wait();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                Optional<Drink> drink = prepareDrink();
+                drink.ifPresent(d -> {
+                    serveDrink();
+                    System.out.println(Thread.currentThread().getName() + " has prepared and served: " + d);
+                });
+                return isOpen();
+            } finally {
+                lock.unlock();
             }
-        }
-        Drink drink = prepareDrink();
-        if (drink != null) {
-            serveDrink();
-            System.out.println(Thread.currentThread().getName() + " has prepared and served: " + drink);
+        } else {
+            return true;
         }
     }
 
-    public synchronized boolean isOpen() {
+    private boolean isOpen() {
         return clientsCount > servedClientsCount;
     }
 }
