@@ -36,6 +36,12 @@
             <artifactId>logback-classic</artifactId>
             <version>1.5.11</version>
         </dependency>
+        <!-- Залежність для генератора паролів -->
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>password-generator</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
 </project>
