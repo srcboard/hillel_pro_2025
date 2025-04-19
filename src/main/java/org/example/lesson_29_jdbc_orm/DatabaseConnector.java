@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DatabaseConnector {
+public class DatabaseConnector implements AutoCloseable {
     private static final String URL = "jdbc:mysql://localhost:3306/company";
     private static final String USER = "root";
     private static final String PASSWORD = "";
@@ -16,6 +16,7 @@ public class DatabaseConnector {
         connection = DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
+    @Override
     public void close() {
         try {
             if (connection != null) {

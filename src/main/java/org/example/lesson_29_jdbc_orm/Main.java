@@ -5,9 +5,8 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        DatabaseConnector db = new DatabaseConnector();
 
-        try {
+        try (DatabaseConnector db = new DatabaseConnector()) {
             db.connect();
             db.createTableIfNotExists();
 
@@ -28,8 +27,6 @@ public class Main {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            db.close();
         }
     }
 }
