@@ -17,7 +17,6 @@ public class Homework {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
-    @Column(name = "dead_line")
     private LocalDate deadline;
     private int mark;
     @ManyToOne
