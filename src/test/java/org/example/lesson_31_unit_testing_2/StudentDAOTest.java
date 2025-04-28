@@ -40,6 +40,7 @@ class StudentDAOTest {
 
         assertEquals(1, students.size());
         Student student = students.getFirst();
+        assertEquals(1, student.getId());
         assertEquals("Test Student", student.getName());
         assertEquals("1234567890", student.getPhoneNumber());
         assertEquals("Test Description", student.getDescription());
