@@ -85,21 +85,19 @@ public class StudentDao implements GenericDao<Student, Long> {
         try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
             transaction = entityManager.getTransaction();
             transaction.begin();
-            Student student = entityManager.find(Student.class, id);
-            if (student != null) {
-                entityManager.remove(student);
-                entityManager.getTransaction().commit();
-                entityManager.close();
-                return true;
-            } else {
-                transaction.rollback();
-                return false;
-            }
+            Student student = entityManager.getReference(Student.class, id);
+            entityManager.remove(student);
+            transaction.commit();
+            return true;
         } catch (RuntimeException e) {
             if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
+                try {
+                    transaction.rollback();
+                } catch (RuntimeException ex) {
+                    ex.printStackTrace();
+                }
             }
-            throw new RuntimeException("Error deleting student");
+            return false;
         }
     }
 }
