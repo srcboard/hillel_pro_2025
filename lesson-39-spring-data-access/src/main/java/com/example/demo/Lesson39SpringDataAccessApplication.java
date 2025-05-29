@@ -18,7 +18,7 @@ public class Lesson39SpringDataAccessApplication {
 		
 		for (int i = 1; i <= 10; i++) {
 			if (customerDaoBean.getById(i) == null) {
-				customerDaoBean.add(new CustomerDto("Bob"+i, "bob@gmail"+i, i));
+				customerDaoBean.add(new CustomerDto("Bob"+i, "bob@gmail.com"+i, i));
 			}
 		}
 		
